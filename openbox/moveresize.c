@@ -583,16 +583,16 @@ static void edge_warp_move_ptr(void)
 
     switch (edge_warp_dir) {
 	case OB_DIRECTION_NORTH:
-	    y = a->height - 1;
+	    y = a->height - 2;
 	    break;
 	case OB_DIRECTION_EAST:
-	    x = a->x;
+	    x = a->x + 1;
 	    break;
 	case OB_DIRECTION_SOUTH:
-	    y = a->y;
+	    y = a->y + 1;
 	    break;
 	case OB_DIRECTION_WEST:
-	    x = a->width - 1;
+	    x = a->width - 2;
 	    break;
 	default:
         g_assert_not_reached();
