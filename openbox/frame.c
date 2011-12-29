@@ -1665,11 +1665,13 @@ static gboolean flash_timeout(gpointer data)
     ObFrame *self = data;
     GTimeVal now;
 
-    g_get_current_time(&now);
-    if (now.tv_sec > self->flash_end.tv_sec ||
-        (now.tv_sec == self->flash_end.tv_sec &&
-         now.tv_usec >= self->flash_end.tv_usec))
-        self->flashing = FALSE;
+    if (config_frame_flash_duration != 0) {
+        g_get_current_time(&now);
+        if (now.tv_sec > self->flash_end.tv_sec ||
+            (now.tv_sec == self->flash_end.tv_sec &&
+             now.tv_usec >= self->flash_end.tv_usec))
+            self->flashing = FALSE;
+    }
 
     if (!self->flashing)
         return FALSE; /* we are done */
@@ -1685,14 +1687,19 @@ static gboolean flash_timeout(gpointer data)
 
 void frame_flash_start(ObFrame *self)
 {
+    if (config_frame_flash_delay == 0) return;
+
     self->flash_on = self->focused;
 
     if (!self->flashing)
         self->flash_timer = g_timeout_add_full(G_PRIORITY_DEFAULT,
-                                               600, flash_timeout, self,
+                                               config_frame_flash_delay, flash_timeout, self,
                                                flash_done);
-    g_get_current_time(&self->flash_end);
-    g_time_val_add(&self->flash_end, G_USEC_PER_SEC * 5);
+
+    if (config_frame_flash_duration != 0) {
+        g_get_current_time(&self->flash_end);
+        g_time_val_add(&self->flash_end, 1000 * config_frame_flash_duration);
+    }
 
     self->flashing = TRUE;
 }

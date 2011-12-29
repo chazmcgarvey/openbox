@@ -63,6 +63,8 @@
   -->
   <keepBorder>yes</keepBorder>
   <animateIconify>yes</animateIconify>
+  <flashFrameDelay>600</flashFrameDelay>
+  <flashFrameDuration>5000</flashFrameDuration>
   <font place="ActiveWindow">
     <name>sans</name>
     <size>8</size>

@@ -145,6 +145,10 @@ extern gchar *config_title_layout;
 extern gboolean config_animate_iconify;
 /*! Size of icons in focus switching dialogs */
 extern guint config_theme_window_list_icon_size;
+/*! Amount of time between flashes (0 to disable flashing) */
+extern guint config_frame_flash_delay;
+/*! How long (ms) to flash the window's frame (0 to flash forever) */
+extern guint config_frame_flash_duration;
 
 /*! The font for the active window's title */
 extern RrFont *config_font_activewindow;

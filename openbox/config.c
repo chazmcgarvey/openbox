@@ -48,6 +48,8 @@ StrutPartial config_margins;
 gchar   *config_theme;
 gboolean config_theme_keepborder;
 guint    config_theme_window_list_icon_size;
+guint    config_frame_flash_delay;
+guint    config_frame_flash_duration;
 
 gchar   *config_title_layout;
 
@@ -655,6 +657,10 @@ static void parse_theme(xmlNodePtr node, gpointer d)
         else if (config_theme_window_list_icon_size > 96)
             config_theme_window_list_icon_size = 96;
     }
+    if ((n = obt_xml_find_node(node, "flashFrameDelay")))
+        config_frame_flash_delay = obt_xml_node_int(n);
+    if ((n = obt_xml_find_node(node, "flashFrameDuration")))
+        config_frame_flash_duration = obt_xml_node_int(n);
 
     n = obt_xml_find_node(node, "font");
     while (n) {
@@ -1031,6 +1037,8 @@ void config_startup(ObtXmlInst *i)
     config_title_layout = g_strdup("NLIMC");
     config_theme_keepborder = TRUE;
     config_theme_window_list_icon_size = 36;
+    config_frame_flash_delay = 600;
+    config_frame_flash_duration = 5000;
 
     config_font_activewindow = NULL;
     config_font_inactivewindow = NULL;

@@ -92,6 +92,9 @@
             <xsd:element minOccurs="0" name="titleLayout" type="xsd:string"/>
             <xsd:element minOccurs="0" name="keepBorder" type="ob:bool"/>
             <xsd:element minOccurs="0" name="animateIconify" type="ob:bool"/>
+            <xsd:element minOccurs="0" name="flashFrameDelay" type="ob:integer"/>
+            <xsd:element minOccurs="0" name="flashFrameDuration" type="ob:integer"/>
+            <xsd:element minOccurs="0" name="animateIconify" type="ob:bool"/>
             <xsd:element minOccurs="0" maxOccurs="unbounded" name="font" type="ob:font"/>
         </xsd:sequence>
     </xsd:complexType>
