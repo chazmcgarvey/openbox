@@ -57,8 +57,9 @@ struct _ObAppSettings
     gint max_horz;
     gint max_vert;
     gint fullscreen;
-
     gint layer;
+
+    guint8 opacity;
 };
 
 /*! Should new windows be focused */

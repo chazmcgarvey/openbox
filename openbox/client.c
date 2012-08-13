@@ -959,6 +959,9 @@ static ObAppSettings *client_get_settings_state(ObClient *self)
             self->desktop = settings->desktop - 1;
     }
 
+    if (settings->opacity != -1)
+	self->opacity = settings->opacity;
+
     if (settings->layer == -1) {
         self->below = TRUE;
         self->above = FALSE;
@@ -1017,6 +1020,8 @@ static void client_restore_session_state(ObClient *self)
     self->max_horz = self->session->max_horz;
     self->max_vert = self->session->max_vert;
     self->undecorated = self->session->undecorated;
+
+    self->opacity = self->session->opacity;
 }
 
 static gboolean client_restore_session_stacking(ObClient *self)
@@ -2787,6 +2792,7 @@ static void client_apply_startup_state(ObClient *self,
     gboolean demands_attention = self->demands_attention;
     gboolean max_horz = self->max_horz;
     gboolean max_vert = self->max_vert;
+    guint8   opacity = self->opacity;
     Rect oldarea;
     gint l;
 
@@ -2835,6 +2841,9 @@ static void client_apply_startup_state(ObClient *self,
 
     /* make sure client_setup_decor_and_functions() is called at least once */
     client_setup_decor_and_functions(self, FALSE);
+
+    /* make the client semi-transparent */
+    client_set_opacity(self, opacity);
 
     /* if the window hasn't been configured yet, then do so now, in fact the
        x,y,w,h may _not_ be the same as the area rect, which can end up
@@ -3722,6 +3731,12 @@ void client_set_desktop(ObClient *self, guint target,
     client_set_desktop_recursive(self, target, donthide, dontraise);
 
     focus_cycle_addremove(NULL, TRUE);
+}
+
+void client_set_opacity(ObClient *self, guint8 opacity)
+{
+    OBT_PROP_SET32(self->window, NET_WM_WINDOW_OPACITY, CARDINAL, 
+	    opacity * 16777216);
 }
 
 gboolean client_is_direct_child(ObClient *parent, ObClient *child)

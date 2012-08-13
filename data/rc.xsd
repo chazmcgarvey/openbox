@@ -249,6 +249,7 @@
             <xsd:element minOccurs="0" name="skip_taskbar" type="ob:bool"/>
             <xsd:element minOccurs="0" name="fullscreen" type="ob:bool"/>
             <xsd:element minOccurs="0" name="maximized" type="ob:maximization"/>
+            <xsd:element minOccurs="0" name="opacity" type="xsd:unsignedByte"/>
         </xsd:all>
         <!-- at least one of these must be present -->
         <xsd:attribute name="role" type="xsd:string"/>

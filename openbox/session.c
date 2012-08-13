@@ -583,6 +583,7 @@ static gboolean session_save_to_file(const ObSMSaveData *savedata)
             fprintf(f, "\t<y>%d</y>\n", prey);
             fprintf(f, "\t<width>%d</width>\n", prew);
             fprintf(f, "\t<height>%d</height>\n", preh);
+            fprintf(f, "\t<opacity>%d</opacity>\n", c->opacity);
             if (c->shaded)
                 fprintf(f, "\t<shaded />\n");
             if (c->iconic)
@@ -763,6 +764,9 @@ static void session_load_file(const gchar *path)
         if (!(n = obt_xml_find_node(node->children, "height")))
             goto session_load_bail;
         state->h = obt_xml_node_int(n);
+        if (!(n = obt_xml_find_node(node->children, "opacity")))
+            goto session_load_bail;
+        state->opacity = obt_xml_node_int(n);
 
         state->shaded =
             obt_xml_find_node(node->children, "shaded") != NULL;

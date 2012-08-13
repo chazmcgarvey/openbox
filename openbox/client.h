@@ -264,6 +264,8 @@ struct _ObClient
     gboolean max_vert;
     /*! The window is maximized to fill the screen horizontally */
     gboolean max_horz;
+    /*! The window is semi-transparent */
+    guint8 opacity;
     /*! The window should not be displayed by pagers */
     gboolean skip_pager;
     /*! The window should not be displayed by taskbars */
@@ -538,6 +540,9 @@ void client_kill(ObClient *self);
 */
 void client_set_desktop(ObClient *self, guint target, gboolean donthide,
                         gboolean dontraise);
+
+/*! Adjust the client opacity */
+void client_set_opacity(ObClient *self, guint8 opacity);
 
 /*! Show the client if it should be shown. Returns if the window is shown. */
 gboolean client_show(ObClient *self);

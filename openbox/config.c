@@ -124,6 +124,7 @@ ObAppSettings* config_create_app_settings(void)
     settings->fullscreen = -1;
     settings->max_horz = -1;
     settings->max_vert = -1;
+    settings->opacity = -1;
     return settings;
 }
 
@@ -149,6 +150,7 @@ void config_app_settings_copy_non_defaults(const ObAppSettings *src,
     copy_if(fullscreen, -1);
     copy_if(max_horz, -1);
     copy_if(max_vert, -1);
+    copy_if(opacity, -1);
 
     if (src->pos_given) {
         dst->pos_given = TRUE;
@@ -374,6 +376,10 @@ static void parse_per_app_settings(xmlNodePtr node, gpointer d)
                             obt_xml_node_bool(n);
                     g_free(s);
                 }
+
+            if ((n = obt_xml_find_node(app->children, "opacity")))
+                if (!obt_xml_node_contains(n, "default"))
+                    settings->opacity = obt_xml_node_int(n);
 
             config_per_app_settings = g_slist_append(config_per_app_settings,
                                                      (gpointer) settings);

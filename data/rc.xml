@@ -723,6 +723,10 @@
 
     <maximized>true</maximized>
     # 'Horizontal', 'Vertical' or boolean (yes/no)
+
+    <opacity>255</opacity>
+    # make the window semi-transparent
+    # value between 0 and 255, inclusive; 0 invisible, 255 fully opaque
   </application>
 
   # end of the example
