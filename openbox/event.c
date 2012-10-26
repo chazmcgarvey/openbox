@@ -698,7 +698,6 @@ static void event_process(const XEvent *ec, gpointer data)
     if (e->type == ButtonPress || e->type == ButtonRelease) {
         ObWindow *w;
         static guint pressed = 0;
-        static Window pressed_win = None;
 
         event_sourcetime = event_curtime;
 
@@ -719,10 +718,8 @@ static void event_process(const XEvent *ec, gpointer data)
             if (prompt && !used)
                 used = event_handle_prompt(prompt, e);
 
-            if (e->type == ButtonPress) {
+            if (e->type == ButtonPress)
                 pressed = e->xbutton.button;
-                pressed_win = e->xbutton.subwindow;
-            }
         }
     }
     else if (e->type == KeyPress || e->type == KeyRelease ||
@@ -813,10 +810,13 @@ void event_enter_client(ObClient *client)
     g_assert(config_focus_follow);
 
     if (is_enter_focus_event_ignored(event_curserial)) {
-        ob_debug_type(OB_DEBUG_FOCUS, "Ignoring enter event with serial %lu\n"
+        ob_debug_type(OB_DEBUG_FOCUS, "Ignoring enter event with serial %lu "
                       "on client 0x%x", event_curserial, client->window);
         return;
     }
+
+    ob_debug_type(OB_DEBUG_FOCUS, "using enter event with serial %lu "
+                  "on client 0x%x", event_curserial, client->window);
 
     if (client_enter_focusable(client) && client_can_focus(client)) {
         if (config_focus_delay) {
@@ -1495,7 +1495,8 @@ static void event_handle_client(ObClient *client, XEvent *e)
             }
             else if ((Atom)e->xclient.data.l[2] ==
                      OBT_PROP_ATOM(NET_WM_MOVERESIZE_CANCEL))
-                moveresize_end(TRUE);
+                if (moveresize_client)
+                    moveresize_end(TRUE);
         } else if (msgtype == OBT_PROP_ATOM(NET_MOVERESIZE_WINDOW)) {
             gint ograv, x, y, w, h;
 
@@ -2002,6 +2003,20 @@ static void event_handle_menu(ObMenuFrame *frame, XEvent *ev)
     ObMenuEntryFrame *e;
 
     switch (ev->type) {
+    case MotionNotify:
+        // We need to catch MotionNotify in addition to EnterNotify because
+        // it is possible for the menu to be opened under the mouse cursor, and
+        // moving the mouse should select the item.
+        if ((e = g_hash_table_lookup(menu_frame_map, &ev->xmotion.window))) {
+            if (e->ignore_enters)
+                --e->ignore_enters;
+            else if (!(f = find_active_menu()) ||
+                     f == e->frame ||
+                     f->parent == e->frame ||
+                     f->child == e->frame)
+                menu_frame_select(e->frame, e, FALSE);
+        }
+        break;
     case EnterNotify:
         if ((e = g_hash_table_lookup(menu_frame_map, &ev->xcrossing.window))) {
             if (e->ignore_enters)

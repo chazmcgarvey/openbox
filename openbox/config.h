@@ -38,12 +38,20 @@ struct _ObAppSettings
     GPatternSpec *class;
     GPatternSpec *name;
     GPatternSpec *role;
+    GPatternSpec *group_class;
+    GPatternSpec *group_name;
     GPatternSpec *title;
     ObClientType  type;
 
     GravityPoint position;
     gboolean pos_given;
     gboolean pos_force;
+
+    gint width_num;
+    gint width_denom;
+    gint height_num;
+    gint height_denom;
+    gboolean size_given;
 
     guint desktop;
     gint shade;
@@ -82,8 +90,6 @@ extern gboolean config_unfocus_leave;
 
 /*! The algorithm to use for placing new windows */
 extern ObPlacePolicy config_place_policy;
-/*! Place windows in the center of the free area */
-extern gboolean config_place_center;
 /*! Place windows on the active monitor (unless they are part of an application
   already on another monitor) */
 extern ObPlaceMonitor config_place_monitor;

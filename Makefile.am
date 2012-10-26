@@ -114,6 +114,7 @@ obrender_libobrender_la_SOURCES = \
 ## obt ##
 
 obt_libobt_la_CPPFLAGS = \
+	$(X_CFLAGS) \
 	$(XINERAMA_CFLAGS) \
 	$(XKB_CFLAGS) \
 	$(XRANDR_CFLAGS) \
@@ -128,6 +129,7 @@ obt_libobt_la_CPPFLAGS = \
 obt_libobt_la_LDFLAGS = \
 	-version-info $(OBT_CURRENT):$(OBT_REVISION):$(OBT_AGE)
 obt_libobt_la_LIBADD = \
+	$(X_LIBS) \
 	$(XINERAMA_LIBS) \
 	$(XKB_LIBS) \
 	$(XRANDR_LIBS) \
@@ -284,6 +286,8 @@ openbox_openbox_SOURCES = \
 	openbox/ping.h \
 	openbox/place.c \
 	openbox/place.h \
+	openbox/place_overlap.c \
+	openbox/place_overlap.h \
 	openbox/prompt.c \
 	openbox/prompt.h \
 	openbox/popup.c \
